@@ -2,10 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Welcome')->name('home');
+Route::get('/latihan-php', function () {
+    $nama = 'Zafira Khairunnisa';
+    $nilai = [80, 75, 55, 45, 48];
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+    $hitungRataRata = function (array $data): float {
+        $total = 0;
+        foreach ($data as $angka) {
+            $total += $angka;
+        }
+        return $total / count($data);
+    };
+
+    $rataRata = $hitungRataRata($nilai);
+    if ($rataRata >= 75) {
+        $status = 'Lulus';
+    } else {
+        $status = 'Perlu Perbaikan';
+    }
+    
+    return view('latihan-php', compact(
+        'nama', 'nilai', 'rataRata', 'status'
+    ));
 });
-
-require __DIR__.'/settings.php';
