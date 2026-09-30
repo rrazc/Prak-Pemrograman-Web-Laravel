@@ -47,7 +47,7 @@ Route::post('/form-mahasiswa', function (Request $request) {
         'nama' => ['required', 'min:3', 'max:50'],
         'email' => ['required', 'email'],
         'usia' => ['required', 'integer', 'min:17', 'max:60'],
-        'NIM' => ['required', 'digits_between:8,11'],
+        'NIM' => ['required', 'digits_between:8,12'],
     ], [
         'nama.required' => 'Nama wajib diisi.',
         'nama.min' => 'Nama minimal 3 karakter.',
@@ -58,7 +58,7 @@ Route::post('/form-mahasiswa', function (Request $request) {
         'usia.min' => 'Usia minimal 17 tahun.',
         'usia.max' => 'Usia maksimal 60 tahun.',
         'NIM.required' => 'NIM wajib diisi.',
-        'NIM.digits_between' => 'NIM harus terdiri dari 8-11 digit.',
+        'NIM.digits_between' => 'NIM harus terdiri dari 8-12 digit.',
     ]);
 
     if ($validator->fails()) {
