@@ -24,6 +24,9 @@
           method="POST">
         @csrf
         @method('PUT')
+        <input type="hidden" name="filter_q" value="{{ request('q') }}">
+        <input type="hidden" name="filter_prodi" value="{{ request('program_studi_id') }}">
+
         <p>NIM<br>
             <input type="text" name="nim"
                    value="{{ old('nim', $mahasiswa['nim']) }}">
@@ -54,7 +57,10 @@
             </select>
         </p>
         <button type="submit">Simpan Perubahan</button>
-        <a href="{{ route('mahasiswa.index') }}">Kembali</a>
+        <a href="{{ route('mahasiswa.index', [
+        'q' => request('q'),
+        'program_studi_id' => request('program_studi_id'),
+        ]) }}">Kembali</a>
     </form>
 </body>
 </html>

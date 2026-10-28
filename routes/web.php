@@ -167,6 +167,11 @@ Route::put('/mahasiswa/{id}', function (
         'program_studi_id' => ['required', 'integer'],
     ]);
 
+    $filter = [
+        'q' => $request->input('filter_q'),
+        'program_studi_id' => $request->input('filter_prodi'),
+    ];
+
     try {
         $pdo = DB::connection()->getPdo();
 
@@ -203,7 +208,7 @@ Route::put('/mahasiswa/{id}', function (
             'id' => $id,
         ]);
 
-        return redirect()->route('mahasiswa.index')->with(
+        return redirect()->route('mahasiswa.index', $filter)->with(
             'berhasil',
             'Data mahasiswa berhasil diperbarui.'
         );
@@ -217,7 +222,12 @@ Route::put('/mahasiswa/{id}', function (
     }
 })->name('mahasiswa.update');
 
-Route::delete('/mahasiswa/{id}', function (int $id) {
+Route::delete('/mahasiswa/{id}', function (Request $request, int $id) {
+    $filter = [
+        'q' => $request->input('q'),
+        'program_studi_id' => $request->input('program_studi_id'),
+    ];
+
     try {
         $pdo = DB::connection()->getPdo();
         $hapus = $pdo->prepare(
@@ -226,20 +236,20 @@ Route::delete('/mahasiswa/{id}', function (int $id) {
         $hapus->execute(['id' => $id]);
 
         if ($hapus->rowCount() === 0) {
-            return redirect()->route('mahasiswa.index')->with(
+            return redirect()->route('mahasiswa.index', $filter)->with(
                 'gagal',
                 'Data mahasiswa tidak ditemukan.'
             );
         }
 
-        return redirect()->route('mahasiswa.index')->with(
+        return redirect()->route('mahasiswa.index', $filter)->with(
             'berhasil',
             'Data mahasiswa berhasil dihapus.'
         );
     } catch (\Throwable $error) {
         report($error);
 
-        return redirect()->route('mahasiswa.index')->with(
+        return redirect()->route('mahasiswa.index', $filter)->with(
             'gagal',
             'Data gagal dihapus. Periksa relasi atau koneksi.'
         );

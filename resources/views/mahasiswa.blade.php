@@ -79,13 +79,19 @@
                 <td>{{ $mahasiswa['usia'] }}</td>
                 <td>{{ $mahasiswa['nama_prodi'] }}</td>
                 <td>
-                    <a href="{{ route('mahasiswa.edit', $mahasiswa['id']) }}">
+                    <a href="{{ route('mahasiswa.edit', [
+                        'id' => $mahasiswa['id'],
+                        'q' => $kataKunci,
+                        'program_studi_id' => $programStudiId,
+                    ]) }}">
                         Ubah
                     </a>
                     <form action="{{ route('mahasiswa.destroy', $mahasiswa['id']) }}"
-                          method="POST">
+                        method="POST">
                         @csrf
                         @method('DELETE')
+                        <input type="hidden" name="q" value="{{ $kataKunci }}">
+                        <input type="hidden" name="program_studi_id" value="{{ $programStudiId }}">
                         <button type="submit"
                                 onclick="return confirm('Hapus data ini?')">
                             Hapus
